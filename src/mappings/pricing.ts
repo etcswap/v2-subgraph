@@ -3,7 +3,7 @@ import { Pair, Token, Bundle } from '../types/schema'
 import { BigDecimal, Address, BigInt } from '@graphprotocol/graph-ts/index'
 import { ZERO_BD, factoryContract, ADDRESS_ZERO, ONE_BD, UNTRACKED_PAIRS } from './helpers'
 
-const WETH_ADDRESS = '0x1953cab0e5bfa6d4a9bad6e05fd46c1cc6527a5a'
+const WETC_ADDRESS = '0x1953cab0e5bfa6d4a9bad6e05fd46c1cc6527a5a'
 const USDC_WETC_PAIR = '0x47895f7fabe1a2958cf82814c51a0e4910671e37'
 const DAI_WETC_PAIR = '0x1af394c030758ba9f296138fead456127f355939'
 const USDT_WETC_PAIR = '0x15cde5c737a74cb81fed121296022317f4df1e66'
