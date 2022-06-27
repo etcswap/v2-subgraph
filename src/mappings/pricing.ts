@@ -3,10 +3,10 @@ import { Pair, Token, Bundle } from '../types/schema'
 import { BigDecimal, Address, BigInt } from '@graphprotocol/graph-ts/index'
 import { ZERO_BD, factoryContract, ADDRESS_ZERO, ONE_BD, UNTRACKED_PAIRS } from './helpers'
 
-const WETC_ADDRESS = '0x1953cab0E5bFa6D4a9BaD6E05fD46C1CC6527a5a'
-const USDC_WETC_PAIR = '0x47895f7FABe1a2958CF82814c51a0E4910671e37'
-const DAI_WETC_PAIR = '0x1af394c030758bA9f296138FEAd456127F355939'
-const USDT_WETC_PAIR = '0x15cde5c737A74CB81fEd121296022317f4dF1e66'
+const WETH_ADDRESS = '0x1953cab0e5bfa6d4a9bad6e05fd46c1cc6527a5a'
+const USDC_WETC_PAIR = '0x47895f7fabe1a2958cf82814c51a0e4910671e37'
+const DAI_WETC_PAIR = '0x1af394c030758ba9f296138fead456127f355939'
+const USDT_WETC_PAIR = '0x15cde5c737a74cb81fed121296022317f4df1e66'
 
 export function getEthPriceInUSD(): BigDecimal {
   // fetch etc prices for each stablecoin
@@ -40,14 +40,14 @@ export function getEthPriceInUSD(): BigDecimal {
 
 // token where amounts should contribute to tracked volume and liquidity
 let WHITELIST: string[] = [
-  '0x1953cab0E5bFa6D4a9BaD6E05fD46C1CC6527a5a', // WETC
-  '0x0dCb0CB0120d355CdE1ce56040be57Add0185BAa', // BNB
-  '0xb12c13e66AdE1F72f71834f2FC5082Db8C091358', // BUSD
-  '0x2C78f1b70Ccf63CDEe49F9233e9fAa99D43AA07e', // DAI
-  '0x218c3c3D49d0E7B37aff0D8bB079de36Ae61A4c0', // ETH
-  '0xC1Be9a4D5D45BeeACAE296a7BD5fADBfc14602C4', // USDC
-  '0xc9BAA8cfdDe8E328787E29b4B078abf2DaDc2055', // USDT
-  '0x332730a4F6E03D9C55829435f10360E13cfA41Ff'  // WBTC
+  '0x1953cab0e5bfa6d4a9bad6e05fd46c1cc6527a5a', // WETC
+  '0x0dcb0cb0120d355cde1ce56040be57add0185baa', // BNB
+  '0xb12c13e66ade1f72f71834f2fc5082db8c091358', // BUSD
+  '0x2c78f1b70ccf63cdee49f9233e9faa99d43aa07e', // DAI
+  '0x218c3c3d49d0e7b37aff0d8bb079de36ae61a4c0', // ETH
+  '0xc1be9a4d5d45beeacae296a7bd5fadbfc14602c4', // USDC
+  '0xc9baa8cfdde8e328787e29b4b078abf2dadc2055', // USDT
+  '0x332730a4f6e03d9c55829435f10360e13cfa41ff'  // WBTC 
 ]
 
 // minimum liquidity required to count towards tracked volume for pairs with small # of Lps
