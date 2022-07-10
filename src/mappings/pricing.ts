@@ -16,23 +16,23 @@ export function getEthPriceInUSD(): BigDecimal {
 
   // all 3 have been created
   if (daiPair !== null && usdcPair !== null && usdtPair !== null) {
-    let totalLiquidityETC = daiPair.reserve1.plus(usdcPair.reserve1).plus(usdtPair.reserve0)
-    let daiWeight = daiPair.reserve1.div(totalLiquidityETC)
-    let usdcWeight = usdcPair.reserve1.div(totalLiquidityETC)
+    let totalLiquidityETC = daiPair.reserve0.plus(usdcPair.reserve0).plus(usdtPair.reserve0)
+    let daiWeight = daiPair.reserve0.div(totalLiquidityETC)
+    let usdcWeight = usdcPair.reserve0.div(totalLiquidityETC)
     let usdtWeight = usdtPair.reserve0.div(totalLiquidityETC)
-    return daiPair.token0Price
+    return daiPair.token1Price
       .times(daiWeight)
-      .plus(usdcPair.token0Price.times(usdcWeight))
+      .plus(usdcPair.token1Price.times(usdcWeight))
       .plus(usdtPair.token1Price.times(usdtWeight))
     // dai and USDC have been created
   } else if (daiPair !== null && usdcPair !== null) {
-    let totalLiquidityETC = daiPair.reserve1.plus(usdcPair.reserve1)
-    let daiWeight = daiPair.reserve1.div(totalLiquidityETC)
-    let usdcWeight = usdcPair.reserve1.div(totalLiquidityETC)
-    return daiPair.token0Price.times(daiWeight).plus(usdcPair.token0Price.times(usdcWeight))
+    let totalLiquidityETC = daiPair.reserve0.plus(usdcPair.reserve0)
+    let daiWeight = daiPair.reserve0.div(totalLiquidityETC)
+    let usdcWeight = usdcPair.reserve0.div(totalLiquidityETC)
+    return daiPair.token1Price.times(daiWeight).plus(usdcPair.token1Price.times(usdcWeight))
     // USDC is the only pair so far
   } else if (usdcPair !== null) {
-    return usdcPair.token0Price
+    return usdcPair.token1Price
   } else {
     return ZERO_BD
   }
@@ -51,10 +51,10 @@ let WHITELIST: string[] = [
 ]
 
 // minimum liquidity required to count towards tracked volume for pairs with small # of Lps
-let MINIMUM_USD_THRESHOLD_NEW_PAIRS = BigDecimal.fromString('400000')
+let MINIMUM_USD_THRESHOLD_NEW_PAIRS = BigDecimal.fromString('1')
 
 // minimum liquidity for price to get tracked
-let MINIMUM_LIQUIDITY_THRESHOLD_ETC = BigDecimal.fromString('2')
+let MINIMUM_LIQUIDITY_THRESHOLD_ETC = BigDecimal.fromString('0.000000001')
 
 /**
  * Search through graph to find derived Eth per token.
