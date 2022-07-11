@@ -7,7 +7,7 @@ const WETC_ADDRESS = '0x1953cab0e5bfa6d4a9bad6e05fd46c1cc6527a5a'
 const USDC_WETC_PAIR = '0x47895f7fabe1a2958cf82814c51a0e4910671e37'
 const DAI_WETC_PAIR = '0x1af394c030758ba9f296138fead456127f355939'
 const USDT_WETC_PAIR = '0x15cde5c737a74cb81fed121296022317f4df1e66'
-const BUSD_WETC_PAIR = '0xC3Eb49B9e9BFABAC8dFE80335477B5Df71dFF78d'
+const BUSD_WETC_PAIR = '0xc3eb49b9e9bfabac8dfe80335477b5df71dff78d'
 
 export function getEthPriceInUSD(): BigDecimal {
   // fetch etc prices for each stablecoin
