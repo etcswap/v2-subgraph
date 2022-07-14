@@ -7,15 +7,29 @@ const WETC_ADDRESS = '0x1953cab0e5bfa6d4a9bad6e05fd46c1cc6527a5a'
 const USDC_WETC_PAIR = '0x47895f7fabe1a2958cf82814c51a0e4910671e37'
 const DAI_WETC_PAIR = '0x1af394c030758ba9f296138fead456127f355939'
 const USDT_WETC_PAIR = '0x15cde5c737a74cb81fed121296022317f4df1e66'
+const BUSD_WETC_PAIR = '0xc3eb49b9e9bfabac8dfe80335477b5df71dff78d'
 
 export function getEthPriceInUSD(): BigDecimal {
   // fetch etc prices for each stablecoin
   let daiPair = Pair.load(DAI_WETC_PAIR) // dai is token0
   let usdcPair = Pair.load(USDC_WETC_PAIR) // usdc is token0
-  let usdtPair = Pair.load(USDT_WETC_PAIR) // usdt is token1
+  let usdtPair = Pair.load(USDT_WETC_PAIR) // usdt is token0
+  let busdPair = Pair.load(BUSD_WETC_PAIR) // busd is token0
 
-  // all 3 have been created
-  if (daiPair !== null && usdcPair !== null && usdtPair !== null) {
+  // BUSD DAI USDC USDT, four stablecoins have an active ETC pair created
+  if (daiPair !== null && usdcPair !== null && usdtPair !== null && busdPair !== null) {
+    let totalLiquidityETC = daiPair.reserve0.plus(usdcPair.reserve0).plus(usdtPair.reserve0).plus(busdPair.reserve0)
+    let daiWeight = daiPair.reserve0.div(totalLiquidityETC)
+    let usdcWeight = usdcPair.reserve0.div(totalLiquidityETC)
+    let usdtWeight = usdtPair.reserve0.div(totalLiquidityETC)
+    let busdWeight = busdPair.reserve0.div(totalLiquidityETC)
+    return daiPair.token1Price
+      .times(daiWeight)
+      .plus(usdcPair.token1Price.times(usdcWeight))
+      .plus(usdtPair.token1Price.times(usdtWeight))
+      .plus(busdPair.token1Price.times(busdWeight))
+    // DAI USDC USDT, three stablecoins have an active ETC pair created
+  } else if (daiPair !== null && usdcPair !== null && usdtPair !== null) {
     let totalLiquidityETC = daiPair.reserve0.plus(usdcPair.reserve0).plus(usdtPair.reserve0)
     let daiWeight = daiPair.reserve0.div(totalLiquidityETC)
     let usdcWeight = usdcPair.reserve0.div(totalLiquidityETC)
@@ -24,13 +38,13 @@ export function getEthPriceInUSD(): BigDecimal {
       .times(daiWeight)
       .plus(usdcPair.token1Price.times(usdcWeight))
       .plus(usdtPair.token1Price.times(usdtWeight))
-    // dai and USDC have been created
+    // DAI USDC, two stablecoins have an active ETC pair created
   } else if (daiPair !== null && usdcPair !== null) {
     let totalLiquidityETC = daiPair.reserve0.plus(usdcPair.reserve0)
     let daiWeight = daiPair.reserve0.div(totalLiquidityETC)
     let usdcWeight = usdcPair.reserve0.div(totalLiquidityETC)
     return daiPair.token1Price.times(daiWeight).plus(usdcPair.token1Price.times(usdcWeight))
-    // USDC is the only pair so far
+    // USDC, one stablecoin has an active ETC pair created
   } else if (usdcPair !== null) {
     return usdcPair.token1Price
   } else {
