@@ -1,55 +1,66 @@
-# ETCSwap V2 Subgraph
+# ETCswap V2 Subgraph
 
-This subgraph dynamically tracks any pair created by the Etcswap factory. It tracks of the current state of Etcswap contracts, and contains derived stats for things like historical data and USD prices.
+Subgraph for indexing ETCswap V2 on-chain data on Ethereum Classic. Tracks pairs, tokens, transactions, liquidity, and historical analytics.
 
-- aggregated data across pairs and tokens,
-- data on individual pairs and tokens,
-- data on transactions
-- data on liquidity providers
-- historical data on Etcswap, pairs or tokens, aggregated by day
+Forked from [Uniswap V2 Subgraph](https://github.com/Uniswap/v2-subgraph) with ETC-specific pricing (WETC, USC) in the `etcswap` branch.
 
-## Running Locally
+## Status: Deployed
 
-Make sure to update package.json settings to point to your own graph account.
+The subgraph is live and serves data for analytics and frontend applications.
 
-## Queries
+## Endpoints
 
-Below are a few ways to show how to query the Etcswap-subgraph for data. The queries show most of the information that is queryable, but there are many other filtering options that can be used, just check out the [querying api](https://thegraph.com/docs/graphql-api). These queries can be used locally or in The Graph Explorer playground.
+| Network | GraphQL Endpoint |
+|---------|-----------------|
+| ETC Mainnet | [`v2-graph.etcswap.org/subgraphs/name/etcswap/graphql`](https://v2-graph.etcswap.org/subgraphs/name/etcswap/graphql) |
 
-## Key Entity Overviews
+## Contract References
 
-#### EtcswapFactory
+### Ethereum Classic (Chain ID: 61)
 
-Contains data across all of Etcswap V2. This entity tracks important things like total liquidity (in ETC and USD, see below), all time volume, transaction count, number of pairs and more.
+| Contract | Address |
+|----------|---------|
+| Factory | [`0x0307cd3D7DA98A29e6Ed0D2137be386Ec1e4Bc9C`](https://etc.blockscout.com/address/0x0307cd3D7DA98A29e6Ed0D2137be386Ec1e4Bc9C) |
+| WETC | [`0x1953cab0E5bFa6D4a9BaD6E05fD46C1CC6527a5a`](https://etc.blockscout.com/token/0x1953cab0E5bFa6D4a9BaD6E05fD46C1CC6527a5a) |
+| USC | [`0xDE093684c796204224BC081f937aa059D903c52a`](https://etc.blockscout.com/token/0xDE093684c796204224BC081f937aa059D903c52a) |
 
-#### Token
+## ETC-Specific Changes (etcswap branch)
 
-Contains data on a specific token. This token specific data is aggregated across all pairs, and is updated whenever there is a transaction involving that token.
+- `src/mappings/pricing.ts` — WETC address and USD pricing via USC stablecoin
+- Token pair references updated for ETC-native tokens
 
-#### Pair
+## Indexed Entities
 
-Contains data on a specific pair.
+- **EtcswapFactory** — Global protocol stats (pair count, total volume, total liquidity)
+- **Token** — Per-token aggregated data (volume, liquidity, price derivations)
+- **Pair** — Per-pair reserves, volume, transaction history
+- **Transaction** — Individual swaps, mints, burns with amounts
+- **User / LiquidityPosition** — LP tracking over time
+- **PairDayData / TokenDayData** — Daily aggregated snapshots
 
-#### Transaction
-
-Every transaction on Etcswap is stored. Each transaction contains an array of mints, burns, and swaps that occured within it.
-
-#### Mint, Burn, Swap
-
-These contain specifc information about a transaction. Things like which pair triggered the transaction, amounts, sender, recipient, and more. Each is linked to a parent Transaction entity.
-
-## Example Queries
-
-### Querying Aggregated Etcswap Data
-
-This query fetches aggredated data from all Etcswap pairs and tokens, to give a view into how much activity is happening within the whole protocol.
+## Example Query
 
 ```graphql
 {
-  EtcswapFactories(first: 1) {
+  etcswapFactories(first: 1) {
     pairCount
     totalVolumeUSD
     totalLiquidityUSD
   }
 }
+```
+
+## Related Repos
+
+- [v2-info](https://github.com/etcswap/v2-info) — Analytics frontend (consuming this subgraph)
+- [v2-core](https://github.com/etcswap/v2-core) — Factory and Pair contracts
+- [v2-interface](https://github.com/etcswap/v2-interface) — Trading frontend
+
+## Local Development
+
+```bash
+yarn install
+yarn codegen
+yarn build
+yarn deploy
 ```
